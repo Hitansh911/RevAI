@@ -1,20 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
-const groq = new OpenAI({
-  apiKey: process.env.GROQ_API_KEY,
-  baseURL: "https://api.groq.com/openai/v1",
-});
-
-const HF_API_KEY = process.env.HF_API_KEY;
 const HF_SENTIMENT_MODEL =
   "cardiffnlp/twitter-roberta-base-sentiment-latest";
+
 
 // ── Hugging Face sentiment helper ─────────────────────────────
 async function getSentimentFromHF(
   text: string
 ): Promise<"positive" | "neutral" | "negative"> {
-  if (!HF_API_KEY) return inferSentimentLocally(text);
+  if (!process.env.HF_API_KEY) return inferSentimentLocally(text);
 
   try {
     const res = await fetch(
@@ -22,7 +17,7 @@ async function getSentimentFromHF(
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${HF_API_KEY}`,
+          Authorization: `Bearer ${process.env.HF_API_KEY}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ inputs: text }),
@@ -128,7 +123,10 @@ Return ONLY valid JSON in this exact format (no markdown, no explanation):
 
 If no questions were provided, return an empty object for answers.`;
 
-    const response = await groq.chat.completions.create({
+    const response = await new OpenAI({
+      apiKey: process.env.GROQ_API_KEY,
+      baseURL: "https://api.groq.com/openai/v1",
+    }).chat.completions.create({
       model: "llama-3.3-70b-versatile",
       messages: [
         {

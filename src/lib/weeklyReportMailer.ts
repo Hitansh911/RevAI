@@ -16,10 +16,15 @@ import { Resend } from "resend";
 import type { WeeklyReportPDFData } from "@/lib/pdfGenerator";
 import { getCategoryTheme } from "@/lib/categoryTheme";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Lazy getter — avoids top-level instantiation during Next.js build-time
+// static analysis when RESEND_API_KEY is not available in the build env.
+function getResendClient(): Resend {
+  return new Resend(process.env.RESEND_API_KEY);
+}
 
-const FROM_EMAIL =
-  process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
+function getFromEmail(): string {
+  return process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
+}
 
 // ── HTML Email Template ──────────────────────────────────────────
 
@@ -245,8 +250,8 @@ export async function sendWeeklyReportEmail(
     const htmlContent = buildEmailHTML(ownerName, businessProfile, reportData);
     const theme       = getCategoryTheme(businessProfile.category);
 
-    const { data, error } = await resend.emails.send({
-      from:    FROM_EMAIL,
+    const { data, error } = await getResendClient().emails.send({
+      from:    getFromEmail(),
       to:      ownerEmail,
       subject: `📊 Your ${theme.reports.title} is Ready`,
       html:    htmlContent,

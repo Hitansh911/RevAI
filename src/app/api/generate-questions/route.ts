@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
-const openai = new OpenAI({
-  apiKey: process.env.GROQ_API_KEY,
-  baseURL: "https://api.groq.com/openai/v1",
-});
 
 // ── Category defaults ────────────────────────────────────────
 const RESTAURANT_CATEGORIES = ["restaurant"];
@@ -158,7 +154,10 @@ export async function POST(req: NextRequest) {
     if (category === "teaching_session") {
       const prompt = buildTeachingPrompt(topic || "a teaching session", count);
 
-      const response = await openai.chat.completions.create({
+      const response = await new OpenAI({
+        apiKey: process.env.GROQ_API_KEY,
+        baseURL: "https://api.groq.com/openai/v1",
+      }).chat.completions.create({
         model: "llama-3.3-70b-versatile",
         messages: [
           { role: "system", content: "You are an expert business consultant and customer psychology architect. You always output valid JSON arrays with no markdown prose." },
@@ -208,7 +207,10 @@ export async function POST(req: NextRequest) {
     let dynamicQuestions: any[] = [];
 
     if (dynamicCount > 0 && prompt) {
-      const response = await openai.chat.completions.create({
+      const response = await new OpenAI({
+        apiKey: process.env.GROQ_API_KEY,
+        baseURL: "https://api.groq.com/openai/v1",
+      }).chat.completions.create({
         model: "llama-3.3-70b-versatile",
         messages: [
           { role: "system", content: "You are an expert business consultant and customer psychology architect. You always output valid JSON arrays with no markdown prose." },

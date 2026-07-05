@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
-const groq = new OpenAI({
-  apiKey: process.env.GROQ_API_KEY,
-  baseURL: "https://api.groq.com/openai/v1",
-});
+
 
 /**
  * Generates AI-driven operational insights from an array of customer review texts.
@@ -62,7 +59,10 @@ Rules:
 - executive_summary must be exactly 2-3 sentences.
 - Output ONLY the JSON object.`;
 
-    const response = await groq.chat.completions.create({
+    const response = await new OpenAI({
+      apiKey: process.env.GROQ_API_KEY,
+      baseURL: "https://api.groq.com/openai/v1",
+    }).chat.completions.create({
       model: "llama-3.3-70b-versatile",
       messages: [
         {

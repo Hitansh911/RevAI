@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
-const openai = new OpenAI({
-  apiKey: process.env.GROQ_API_KEY,
-  baseURL: "https://api.groq.com/openai/v1",
-});
 
 const TONE_MAP: Record<number, string> = {
   1: "frustrated and very disappointed. Be honest about the poor experience.",
@@ -64,7 +60,10 @@ Format:
   ]
 }`;
 
-    const response = await openai.chat.completions.create({
+    const response = await new OpenAI({
+      apiKey: process.env.GROQ_API_KEY,
+      baseURL: "https://api.groq.com/openai/v1",
+    }).chat.completions.create({
       model: "llama-3.3-70b-versatile",
       messages: [
         { role: "system", content: "You are a helpful assistant that outputs only valid JSON objects." },

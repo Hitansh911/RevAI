@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
-const openai = new OpenAI({
-  apiKey: process.env.GROQ_API_KEY,
-  baseURL: "https://api.groq.com/openai/v1",
-});
 
 // ── Persona map based on category ────────────────────────────
 const PERSONA: Record<string, string> = {
@@ -56,7 +52,10 @@ Format example:
   "q3": "The grilled salmon was outstanding and the portion was generous."
 }`;
 
-    const response = await openai.chat.completions.create({
+    const response = await new OpenAI({
+      apiKey: process.env.GROQ_API_KEY,
+      baseURL: "https://api.groq.com/openai/v1",
+    }).chat.completions.create({
       model: "llama-3.3-70b-versatile",
       messages: [
         { role: "system", content: "You are a helpful assistant that always outputs valid JSON." },

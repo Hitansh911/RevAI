@@ -16,11 +16,15 @@
 import OpenAI from "openai";
 import type { WeeklyMetrics, WeeklyReportAIOutput } from "@/types";
 
-// ── Groq client (reusing the same pattern as generate-insights) ──
-const groq = new OpenAI({
-  apiKey: process.env.GROQ_API_KEY,
-  baseURL: "https://api.groq.com/openai/v1",
-});
+// ── Groq client — lazy getter to avoid top-level instantiation ──────
+// Prevents Next.js build-time crash when GROQ_API_KEY is not in the
+// build environment (only needed at request-time, not build-time).
+function getGroqClient(): OpenAI {
+  return new OpenAI({
+    apiKey: process.env.GROQ_API_KEY,
+    baseURL: "https://api.groq.com/openai/v1",
+  });
+}
 
 // ── Fallback defaults returned on any LLM failure ────────────────
 export const WEEKLY_REPORT_FALLBACK: WeeklyReportAIOutput = {
@@ -159,7 +163,7 @@ export async function generateWeeklyReportAI(
     let rawContent: string;
 
     try {
-      const response = await groq.chat.completions.create(
+      const response = await getGroqClient().chat.completions.create(
         {
           model: "llama-3.3-70b-versatile",
           messages: [
