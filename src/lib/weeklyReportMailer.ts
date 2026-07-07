@@ -125,7 +125,7 @@ function buildEmailHTML(
               <tr>
                 <td>
                   <div style="display:inline-block; background:#6366F1; width:32px; height:32px; border-radius:8px; text-align:center; line-height:32px; font-size:16px; font-weight:bold; color:white; margin-bottom:12px;">R</div>
-                  <div style="font-size:11px; color:#A5B4FC; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px;">ReviewAI</div>
+                  <div style="font-size:11px; color:#A5B4FC; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px;">RatiFy</div>
                   <div style="font-size:20px; color:#FFFFFF; font-weight:700; margin-bottom:6px;">Your ${theme.reports.title}</div>
                   <div style="font-size:12px; color:#94A3B8;">${weekStart} → ${weekEnd}  ·  ${businessProfile.name}</div>
                 </td>
@@ -190,7 +190,7 @@ function buildEmailHTML(
               Your complete report — including detailed improvement areas, recommendations, and trend charts — is attached as a PDF to this email.
             </p>
             <p style="font-size:12px; color:#94A3B8; margin:0; line-height:1.5;">
-              This report was automatically generated every Monday by ReviewAI.<br/>
+              This report was automatically generated every Monday by RatiFy.<br/>
               To manage your notification preferences, visit your dashboard settings.
             </p>
           </td>
@@ -201,7 +201,7 @@ function buildEmailHTML(
           <td style="background:#F8FAFC; border-top:1px solid #E2E8F0; padding:16px 32px;">
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="font-size:11px; color:#94A3B8;">Powered by <strong style="color:#6366F1;">ReviewAI</strong></td>
+                <td style="font-size:11px; color:#94A3B8;">Powered by <strong style="color:#6366F1;">RatiFy</strong></td>
                 <td align="right" style="font-size:11px; color:#94A3B8;">Confidential — For internal use only</td>
               </tr>
             </table>
@@ -246,7 +246,7 @@ export async function sendWeeklyReportEmail(
 
     const safeDate    = weekStart.slice(0, 10);
     const safeName    = businessProfile.name.replace(/[^a-zA-Z0-9]/g, "-").toLowerCase();
-    const filename    = `reviewai-weekly-report-${safeName}-${safeDate}.pdf`;
+    const filename    = `ratify-weekly-report-${safeName}-${safeDate}.pdf`;
     const htmlContent = buildEmailHTML(ownerName, businessProfile, reportData);
     const theme       = getCategoryTheme(businessProfile.category);
 

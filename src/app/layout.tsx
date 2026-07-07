@@ -7,7 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ReviewAI — Instant Google Reviews",
+  title: "RatiFy — Instant Google Reviews",
   description: "Generate and post authentic Google reviews in under 30 seconds.",
 };
 

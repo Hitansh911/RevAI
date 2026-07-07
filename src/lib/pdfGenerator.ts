@@ -301,7 +301,7 @@ export function generateWeeklyReportPDF(
         margins: { top: 0, bottom: MARGIN, left: MARGIN, right: MARGIN },
         info: {
           Title:    `${theme.reports.title} — ${businessProfile.name}`,
-          Author:   "ReviewAI",
+          Author:   "RatiFy",
           Subject:  theme.reports.title,
           Keywords: "reviews, analytics, weekly report",
         },
@@ -326,7 +326,7 @@ export function generateWeeklyReportPDF(
 
       // Title
       setFill(doc, C.white).font("Helvetica-Bold").fontSize(15)
-        .text(`ReviewAI ${theme.reports.title}`, MARGIN + 38, 24, { lineBreak: false });
+        .text(`RatiFy ${theme.reports.title}`, MARGIN + 38, 24, { lineBreak: false });
 
       // Business name
       setFill(doc, "#A5B4FC" /* indigo-300 */).font("Helvetica").fontSize(10)
@@ -539,7 +539,7 @@ export function generateWeeklyReportPDF(
       doc.moveTo(MARGIN, footerY - 6).lineTo(PAGE_WIDTH - MARGIN, footerY - 6).lineWidth(0.5).stroke();
 
       setFill(doc, C.slate500).font("Helvetica").fontSize(7.5)
-        .text("Powered by ReviewAI  ·  Confidential Business Report", MARGIN, footerY, {
+        .text("Powered by RatiFy  ·  Confidential Business Report", MARGIN, footerY, {
           width: CONTENT_W / 2, lineBreak: false,
         });
 

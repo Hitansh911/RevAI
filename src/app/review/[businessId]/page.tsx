@@ -246,7 +246,7 @@ export default function ReviewPage({
 
         if (!urlQuestions) {
           try {
-            const cached = sessionStorage.getItem(`reviewai_qs_${businessId}`);
+            const cached = sessionStorage.getItem(`ratify_qs_${businessId}`);
             if (cached) urlQuestions = JSON.parse(cached);
           } catch {}
         }
@@ -266,7 +266,7 @@ export default function ReviewPage({
         ) {
           try {
             sessionStorage.setItem(
-              `reviewai_qs_${businessId}`,
+              `ratify_qs_${businessId}`,
               JSON.stringify(biz.questions)
             );
           } catch {}

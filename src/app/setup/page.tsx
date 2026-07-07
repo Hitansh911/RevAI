@@ -308,7 +308,7 @@ export default function SetupPage() {
               <div className="w-7 h-7 rounded-lg bg-violet-600 flex items-center justify-center">
                 <Star size={14} color="white" fill="white" />
               </div>
-              <span className="font-bold text-gray-900 text-sm tracking-tight">ReviewAI</span>
+              <span className="font-bold text-gray-900 text-sm tracking-tight">RatiFy</span>
             </div>
             <span className="text-xs text-gray-400 font-medium">Business Setup</span>
           </div>

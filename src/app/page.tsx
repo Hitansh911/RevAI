@@ -146,7 +146,7 @@ export default async function HomePage() {
             <div style={{ width: 32, height: 32, background: "linear-gradient(135deg,#5b21b6,#7c3aed)", borderRadius: 9, display: "flex", alignItems: "center", justifyContent: "center" }}>
               <Star size={15} style={{ color: "#fff", fill: "#fff" }} />
             </div>
-            ReviewAI
+            RatiFy
           </div>
           <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
             {userId ? (
@@ -329,7 +329,7 @@ export default async function HomePage() {
         </section>
 
         <footer style={{ background: "#0a0514", padding: "22px 40px", textAlign: "center" }}>
-          <p style={{ color: "rgba(255,255,255,.25)", fontSize: 12, margin: 0 }}>© 2025 ReviewAI · Built for businesses that care about reputation</p>
+          <p style={{ color: "rgba(255,255,255,.25)", fontSize: 12, margin: 0 }}>© 2025 RatiFy · Built for businesses that care about reputation</p>
         </footer>
       </main>
     </>

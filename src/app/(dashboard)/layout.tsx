@@ -85,7 +85,7 @@ function DashboardLayoutInner({ children }: { children: React.ReactNode }) {
             <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center shrink-0">
               <Star className="w-4 h-4 text-white fill-white" />
             </div>
-            <span className="font-bold text-xl tracking-tight text-slate-900">ReviewAI</span>
+            <span className="font-bold text-xl tracking-tight text-slate-900">RatiFy</span>
           </div>
           <div className="flex items-center gap-3">
             {/* Sub-Nav Pill */}
