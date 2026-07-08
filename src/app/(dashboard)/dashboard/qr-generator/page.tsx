@@ -89,64 +89,91 @@ export default function QRGenerator() {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500 overflow-x-hidden">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900 mb-1">QR Code Generator</h1>
+    <div className="w-full max-w-2xl mx-auto box-border overflow-x-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
+      {/* Page Header */}
+      <div className="mb-6 px-0">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 mb-1">QR Code Generator</h1>
         <p className="text-slate-500 text-sm">Download your QR code or share your unique review link.</p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-8">
-        {/* QR Code Display */}
-        <section className="flex flex-col items-center justify-center p-6 sm:p-12 text-center bg-white border border-[#E2E0E8] shadow-[0px_10px_30px_rgba(0,0,0,0.04)] rounded-[24px] w-full box-border">
-          <div className="bg-white p-4 sm:p-6 rounded-[24px] shadow-sm border border-[#E2E0E8] mb-6 w-full max-w-[280px] mx-auto">
+      {/* Card — stacks vertically on mobile, side-by-side on md+ */}
+      <div className="flex flex-col md:flex-row gap-6 w-full box-border">
+
+        {/* Left Panel: QR Code */}
+        <section className="w-full box-border flex flex-col items-center justify-center text-center bg-white border border-[#E2E0E8] shadow-[0px_10px_30px_rgba(0,0,0,0.04)] rounded-[24px] p-6">
+          <div className="w-full max-w-[200px] mx-auto bg-white p-3 rounded-[16px] shadow-sm border border-[#E2E0E8] mb-5">
             <QRCodeSVG
               id="qr-code"
               value={qrUrl}
-              size={220}
+              size={180}
               level={"H"}
               includeMargin={true}
-              style={{ width: "100%", height: "auto", maxWidth: "220px", display: "block", margin: "0 auto" }}
+              style={{ width: "100%", height: "auto", display: "block" }}
             />
           </div>
-          <h2 className="text-xl font-bold text-slate-900 mb-2">{businessName || "Your Business"}</h2>
-          <p className="text-sm text-slate-500 max-w-[250px]">
+          <h2 className="text-lg font-bold text-slate-900 mb-1">{businessName || "Your Business"}</h2>
+          <p className="text-sm text-slate-500 max-w-[220px]">
             Print this QR code and display it at your front desk or on receipts.
           </p>
         </section>
 
-        {/* Actions */}
-        <div className="flex flex-col justify-center space-y-6">
-          <div>
-            <h3 className="text-lg font-bold text-slate-900 mb-2">Download QR Code</h3>
+        {/* Right Panel: Actions */}
+        <div className="w-full box-border flex flex-col justify-center gap-6">
+
+          {/* Download */}
+          <div className="w-full">
+            <h3 className="text-lg font-bold text-slate-900 mb-1">Download QR Code</h3>
             <p className="text-sm text-slate-500 mb-4">
               Get a high-quality PNG image of your QR code ready for printing.
             </p>
-            <Button onClick={downloadQR} className="w-full sm:w-auto bg-[#4a47d2] hover:bg-[#332dbc] text-white shadow-md">
+            <Button
+              onClick={downloadQR}
+              className="w-full bg-[#4a47d2] hover:bg-[#332dbc] text-white shadow-md"
+            >
               <Download className="w-4 h-4 mr-2" /> Download PNG
             </Button>
           </div>
 
-          <hr className="border-slate-200" />
+          <hr className="border-slate-200 w-full" />
 
-          <div>
-            <h3 className="text-lg font-bold text-slate-900 mb-2">Direct Link</h3>
+          {/* Direct Link */}
+          <div className="w-full">
+            <h3 className="text-lg font-bold text-slate-900 mb-1">Direct Link</h3>
             <p className="text-sm text-slate-500 mb-4">
               Share this link in emails, SMS, or on your social media profiles.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 w-full">
-              <div className="flex-1 min-w-0 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 flex items-center justify-between overflow-hidden w-full">
-                <span className="text-sm font-medium text-slate-700 truncate min-w-0">{baseUrl}</span>
-                <a href={shareLinkUrl} target="_blank" rel="noreferrer" className="text-[#4a47d2] hover:text-[#332dbc] shrink-0 ml-3">
+            {/* URL row — stacks to column on very small screens */}
+            <div className="flex flex-col sm:flex-row gap-3 w-full box-border">
+              <div className="flex-1 min-w-0 w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 flex items-center gap-2 overflow-hidden">
+                <span className="text-sm font-medium text-slate-700 truncate min-w-0 flex-1">{baseUrl}</span>
+                <a
+                  href={shareLinkUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-[#4a47d2] hover:text-[#332dbc] shrink-0"
+                >
                   <ExternalLink className="w-4 h-4" />
                 </a>
               </div>
-              <Button onClick={copyLink} variant={copied ? "secondary" : "outline"} className={`w-full sm:w-auto ${copied ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100" : "bg-white hover:bg-slate-50 text-slate-900 border-slate-200"}`}>
-                {copied ? <><CheckCircle2 className="w-4 h-4 mr-2" /> Copied</> : <><Copy className="w-4 h-4 mr-2" /> Copy</>}
+              <Button
+                onClick={copyLink}
+                variant={copied ? "secondary" : "outline"}
+                className={`w-full sm:w-auto shrink-0 ${
+                  copied
+                    ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100"
+                    : "bg-white hover:bg-slate-50 text-slate-900 border-slate-200"
+                }`}
+              >
+                {copied
+                  ? <><CheckCircle2 className="w-4 h-4 mr-2" /> Copied</>
+                  : <><Copy className="w-4 h-4 mr-2" /> Copy</>
+                }
               </Button>
             </div>
           </div>
+
         </div>
       </div>
     </div>
   );
-}
+
