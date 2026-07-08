@@ -89,7 +89,7 @@ export default function QRGenerator() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="w-full max-w-7xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500 overflow-x-hidden">
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight text-slate-900 mb-1">QR Code Generator</h1>
         <p className="text-slate-500 text-sm">Download your QR code or share your unique review link.</p>
@@ -97,14 +97,15 @@ export default function QRGenerator() {
 
       <div className="grid md:grid-cols-2 gap-8">
         {/* QR Code Display */}
-        <section className="flex flex-col items-center justify-center p-12 text-center bg-white border border-[#E2E0E8] shadow-[0px_10px_30px_rgba(0,0,0,0.04)] rounded-[24px]">
-          <div className="bg-white p-6 rounded-[24px] shadow-sm border border-[#E2E0E8] mb-6">
+        <section className="flex flex-col items-center justify-center p-6 sm:p-12 text-center bg-white border border-[#E2E0E8] shadow-[0px_10px_30px_rgba(0,0,0,0.04)] rounded-[24px] w-full box-border">
+          <div className="bg-white p-4 sm:p-6 rounded-[24px] shadow-sm border border-[#E2E0E8] mb-6 w-full max-w-[280px] mx-auto">
             <QRCodeSVG
               id="qr-code"
               value={qrUrl}
               size={220}
               level={"H"}
               includeMargin={true}
+              style={{ width: "100%", height: "auto", maxWidth: "220px", display: "block", margin: "0 auto" }}
             />
           </div>
           <h2 className="text-xl font-bold text-slate-900 mb-2">{businessName || "Your Business"}</h2>
@@ -132,14 +133,14 @@ export default function QRGenerator() {
             <p className="text-sm text-slate-500 mb-4">
               Share this link in emails, SMS, or on your social media profiles.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <div className="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 flex items-center justify-between overflow-hidden">
-                <span className="text-sm font-medium text-slate-700 truncate">{baseUrl}</span>
+            <div className="flex flex-col sm:flex-row gap-3 w-full">
+              <div className="flex-1 min-w-0 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 flex items-center justify-between overflow-hidden w-full">
+                <span className="text-sm font-medium text-slate-700 truncate min-w-0">{baseUrl}</span>
                 <a href={shareLinkUrl} target="_blank" rel="noreferrer" className="text-[#4a47d2] hover:text-[#332dbc] shrink-0 ml-3">
                   <ExternalLink className="w-4 h-4" />
                 </a>
               </div>
-              <Button onClick={copyLink} variant={copied ? "secondary" : "outline"} className={copied ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100" : "bg-white hover:bg-slate-50 text-slate-900 border-slate-200"}>
+              <Button onClick={copyLink} variant={copied ? "secondary" : "outline"} className={`w-full sm:w-auto ${copied ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100" : "bg-white hover:bg-slate-50 text-slate-900 border-slate-200"}`}>
                 {copied ? <><CheckCircle2 className="w-4 h-4 mr-2" /> Copied</> : <><Copy className="w-4 h-4 mr-2" /> Copy</>}
               </Button>
             </div>

@@ -11,9 +11,9 @@ const FLOATING_REVIEWS = [
   { stars: 5, text: "Highly recommend!", delay: "0.8s", x: "3%", y: "68%" },
 ];
 
-function FloatingCard({ stars, text, delay, x, y }: any) {
+function FloatingCard({ stars, text, delay, x, y, className }: any) {
   return (
-    <div style={{
+    <div className={className} style={{
       position: "absolute", left: x, top: y,
       background: "rgba(255,255,255,0.88)", backdropFilter: "blur(12px)",
       border: "1px solid rgba(139,92,246,0.12)", borderRadius: 12,
@@ -131,9 +131,55 @@ export default async function HomePage() {
 
         .nav-link { color:#6b7280; font-size:14px; font-weight:500; text-decoration:none; padding:8px 14px; border-radius:8px; transition:color .15s; }
         .nav-link:hover { color:#7c3aed; }
+
+        @media (max-width: 768px) {
+          .floating-badge { display: none !important; }
+
+          .hero-h1 {
+            font-size: calc(1.8rem + 2vw) !important;
+            line-height: 1.25 !important;
+            letter-spacing: -0.02em !important;
+          }
+
+          .r-stats-row {
+            flex-direction: column !important;
+            align-items: center !important;
+            gap: 24px !important;
+            width: 100% !important;
+          }
+
+          .hero-section {
+            padding: 48px 20px 64px !important;
+          }
+
+          .section-pad {
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+          }
+
+          .nav-pad {
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+          }
+
+          .hero-p {
+            font-size: 16px !important;
+            padding: 0 4px !important;
+          }
+
+          .bottom-cta-h2 {
+            font-size: 28px !important;
+            letter-spacing: -1px !important;
+          }
+
+          .footer-pad {
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+          }
+        }
       `}</style>
 
-      <main style={{ fontFamily: "'Inter',sans-serif", background: "#fafafa", color: "#111" }}>
+      <main style={{ fontFamily: "'Inter',sans-serif", background: "#fafafa", color: "#111", overflowX: "hidden", width: "100%", maxWidth: "100vw" }}>
 
         {/* ── NAV ── */}
         <nav style={{
@@ -141,7 +187,7 @@ export default async function HomePage() {
           padding: "16px 40px", maxWidth: 1100, margin: "0 auto",
           position: "sticky", top: 0, zIndex: 50,
           background: "rgba(250,250,250,0.9)", backdropFilter: "blur(14px)",
-        }}>
+        }} className="nav-pad">
           <div style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 800, fontSize: 18, color: "#5b21b6" }}>
             <div style={{ width: 32, height: 32, background: "linear-gradient(135deg,#5b21b6,#7c3aed)", borderRadius: 9, display: "flex", alignItems: "center", justifyContent: "center" }}>
               <Star size={15} style={{ color: "#fff", fill: "#fff" }} />
@@ -169,8 +215,8 @@ export default async function HomePage() {
         </nav>
 
         {/* ── HERO ── */}
-        <section style={{ position: "relative", maxWidth: 1100, margin: "0 auto", padding: "72px 40px 96px", textAlign: "center", overflow: "hidden" }}>
-          {FLOATING_REVIEWS.map((r, i) => <FloatingCard key={i} {...r} />)}
+        <section style={{ position: "relative", maxWidth: 1100, margin: "0 auto", padding: "72px 40px 96px", textAlign: "center", overflow: "hidden" }} className="hero-section">
+          {FLOATING_REVIEWS.map((r, i) => <FloatingCard key={i} {...r} className="floating-badge" />)}
           <div style={{ position: "absolute", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle,rgba(139,92,246,.1) 0%,transparent 70%)", top: "5%", left: "50%", transform: "translateX(-50%)", pointerEvents: "none" }} />
 
           <div className="r-badge" style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "rgba(139,92,246,.07)", border: "1px solid rgba(139,92,246,.15)", borderRadius: 100, padding: "7px 16px", marginBottom: 24 }}>
@@ -181,11 +227,11 @@ export default async function HomePage() {
             <span style={{ fontSize: 12, fontWeight: 600, color: "#7c3aed" }}>500+ businesses active right now</span>
           </div>
 
-          <h1 className="r-h1" style={{ fontSize: "clamp(40px,6.5vw,72px)", fontWeight: 900, lineHeight: 1.06, marginBottom: 18, letterSpacing: "-2.5px" }}>
+          <h1 className="r-h1 hero-h1" style={{ fontSize: "clamp(36px,6.5vw,72px)", fontWeight: 900, lineHeight: 1.06, marginBottom: 18, letterSpacing: "-2.5px" }}>
             Reviews that write<br /><span className="gradient-word">themselves.</span>
           </h1>
 
-          <p className="r-p" style={{ fontSize: 18, color: "#6b7280", maxWidth: 500, margin: "0 auto 36px", lineHeight: 1.7, fontWeight: 400 }}>
+          <p className="r-p hero-p" style={{ fontSize: 18, color: "#6b7280", maxWidth: 500, margin: "0 auto 36px", lineHeight: 1.7, fontWeight: 400 }}>
             Scan QR → tap stars → AI writes the review → posts to Google. Done in 30 seconds. No typing.
           </p>
 
@@ -206,7 +252,7 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <div className="r-stats" style={{ display: "flex", gap: 48, justifyContent: "center", marginTop: 60, flexWrap: "wrap" }}>
+          <div className="r-stats r-stats-row" style={{ display: "flex", gap: 48, justifyContent: "center", marginTop: 60, flexWrap: "wrap" }}>
             {[
               { val: 500, suf: "+", label: "Businesses" },
               { val: 12000, suf: "+", label: "Reviews generated" },
@@ -223,7 +269,7 @@ export default async function HomePage() {
         </section>
 
         {/* ── HOW IT WORKS ── */}
-        <section id="how-it-works" style={{ background: "#fff", padding: "80px 40px" }}>
+        <section id="how-it-works" style={{ background: "#fff", padding: "80px 40px" }} className="section-pad">
           <div style={{ maxWidth: 1100, margin: "0 auto" }}>
             <div style={{ textAlign: "center", marginBottom: 52 }}>
               <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: 3, color: "#7c3aed", textTransform: "uppercase", marginBottom: 10 }}>Process</p>
@@ -251,7 +297,7 @@ export default async function HomePage() {
         </section>
 
         {/* ── FEATURES ── */}
-        <section style={{ padding: "80px 40px", background: "#fafafa" }}>
+        <section style={{ padding: "80px 40px", background: "#fafafa" }} className="section-pad">
           <div style={{ maxWidth: 1100, margin: "0 auto" }}>
             <div style={{ textAlign: "center", marginBottom: 52 }}>
               <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: 3, color: "#7c3aed", textTransform: "uppercase", marginBottom: 10 }}>Features</p>
@@ -277,7 +323,7 @@ export default async function HomePage() {
         </section>
 
         {/* ── TESTIMONIALS ── */}
-        <section style={{ padding: "80px 40px", background: "#fff" }}>
+        <section style={{ padding: "80px 40px", background: "#fff" }} className="section-pad">
           <div style={{ maxWidth: 900, margin: "0 auto" }}>
             <div style={{ textAlign: "center", marginBottom: 48 }}>
               <h2 style={{ fontSize: 32, fontWeight: 800, color: "#111", letterSpacing: "-1px", margin: 0 }}>What people are saying</h2>
@@ -300,8 +346,8 @@ export default async function HomePage() {
         </section>
 
         {/* ── BOTTOM CTA ── */}
-        <section style={{ padding: "80px 40px", background: "linear-gradient(135deg,#3b0764,#5b21b6,#6d28d9)", textAlign: "center" }}>
-          <h2 style={{ fontSize: 42, fontWeight: 900, color: "#fff", marginBottom: 14, letterSpacing: "-2px" }}>Ready to grow your reviews?</h2>
+        <section style={{ padding: "80px 40px", background: "linear-gradient(135deg,#3b0764,#5b21b6,#6d28d9)", textAlign: "center" }} className="section-pad">
+          <h2 className="bottom-cta-h2" style={{ fontSize: 42, fontWeight: 900, color: "#fff", marginBottom: 14, letterSpacing: "-2px" }}>Ready to grow your reviews?</h2>
           <p style={{ fontSize: 16, color: "rgba(255,255,255,.65)", marginBottom: 32, lineHeight: 1.6, maxWidth: 440, margin: "0 auto 32px" }}>
             Free plan — 20 reviews/month. No credit card required to start.
           </p>
@@ -328,7 +374,7 @@ export default async function HomePage() {
           )}
         </section>
 
-        <footer style={{ background: "#0a0514", padding: "22px 40px", textAlign: "center" }}>
+        <footer style={{ background: "#0a0514", padding: "22px 40px", textAlign: "center" }} className="footer-pad">
           <p style={{ color: "rgba(255,255,255,.25)", fontSize: 12, margin: 0 }}>© 2025 RatiFy · Built for businesses that care about reputation</p>
         </footer>
       </main>
