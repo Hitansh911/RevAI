@@ -2,9 +2,9 @@
 
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
-import { getBusinessProfile, getWeeklyReports } from "@/app/actions";
+import { getBusinessProfile, getWeeklyReports, deleteWeeklyReport } from "@/app/actions";
 import { WeeklyReport } from "@prisma/client";
-import { Download, Eye, Send, FileText, Star, Mail } from "lucide-react";
+import { Download, Eye, Send, FileText, Star, Mail, Trash2 } from "lucide-react";
 import { ReportSlideOut } from "@/components/dashboard/ReportSlideOut";
 import { useCategoryTheme } from "@/context/CategoryContext";
 import Image from "next/image";
@@ -62,6 +62,7 @@ export default function ReportsPage() {
   const [selectedReport, setSelectedReport] = useState<WeeklyReport | null>(null);
   const [isSlideOutOpen, setIsSlideOutOpen] = useState(false);
   const [sendingId, setSendingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadData() {
@@ -98,6 +99,21 @@ export default function ReportsPage() {
       alert(`Failed to send report: ${error.message}`);
     } finally {
       setSendingId(null);
+    }
+  };
+
+  const handleDelete = async (reportId: string) => {
+    if (!businessData) return;
+    if (!confirm("Are you sure you want to delete this report? This action cannot be undone.")) return;
+    
+    setDeletingId(reportId);
+    try {
+      await deleteWeeklyReport(reportId, businessData.id);
+      setReports((prev) => prev.filter((r) => r.id !== reportId));
+    } catch (error: any) {
+      alert(`Failed to delete report: ${error.message}`);
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -191,6 +207,19 @@ export default function ReportsPage() {
                       Free Plan
                     </div>
                   )}
+                  
+                  <button 
+                    onClick={() => handleDelete(report.id)}
+                    disabled={deletingId === report.id}
+                    className="w-[44px] h-[44px] bg-red-50 border border-red-200 text-red-600 hover:bg-red-100 rounded-[14px] flex items-center justify-center transition-colors active:scale-95 shrink-0 disabled:opacity-50 disabled:active:scale-100"
+                    title="Delete Report"
+                  >
+                    {deletingId === report.id ? (
+                      <div className="w-4 h-4 border-2 border-red-300 border-t-red-600 rounded-full animate-spin" />
+                    ) : (
+                      <Trash2 className="w-4 h-4" />
+                    )}
+                  </button>
                 </div>
               </div>
             );

@@ -159,3 +159,18 @@ export async function getWeeklyReports(businessId: string) {
     orderBy: { weekStart: "desc" },
   });
 }
+
+export async function deleteWeeklyReport(reportId: string, businessId: string) {
+  // Ensure the report belongs to this business
+  const report = await prisma.weeklyReport.findFirst({
+    where: { id: reportId, businessId },
+  });
+  
+  if (!report) {
+    throw new Error("Report not found or unauthorized.");
+  }
+  
+  await prisma.weeklyReport.delete({
+    where: { id: reportId },
+  });
+}
