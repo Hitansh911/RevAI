@@ -77,16 +77,16 @@ function DashboardLayoutInner({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-[#F0EDF5] font-sans antialiased text-slate-900 pb-24">
+    <div className="min-h-screen bg-[#F0EDF5] font-sans antialiased text-slate-900 pb-24 overflow-x-hidden">
       {/* Top Navigation Shell */}
       <header className="fixed top-0 w-full z-40 bg-white/60 backdrop-blur-xl border-b border-gray-200/50 shadow-sm h-20">
         <div className="flex items-center justify-between w-full h-full max-w-7xl mx-auto px-4 md:px-6">
-          <div className="flex items-center gap-2">
+          <Link href="/dashboard" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center shrink-0">
               <Star className="w-4 h-4 text-white fill-white" />
             </div>
             <span className="font-bold text-xl tracking-tight text-slate-900">RatiFy</span>
-          </div>
+          </Link>
           <div className="flex items-center gap-3">
             {/* Sub-Nav Pill */}
             <nav 
@@ -151,7 +151,7 @@ function DashboardLayoutInner({ children }: { children: React.ReactNode }) {
       </header>
 
       {/* Main Content Area */}
-      <main className="pt-48 px-4 md:px-6 space-y-5 max-w-7xl mx-auto w-full">
+      <main className="pt-28 md:pt-48 px-4 md:px-6 space-y-5 max-w-7xl mx-auto w-full overflow-x-hidden">
         {children}
       </main>
     </div>
