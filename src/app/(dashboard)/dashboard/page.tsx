@@ -325,19 +325,20 @@ function TabBar({ active, onChange }: { active: TabKey; onChange: (t: TabKey) =>
   ];
 
   return (
-    <div className="flex items-center bg-white/80 backdrop-blur-lg border border-gray-200/50 p-1 rounded-full shadow-sm w-max mb-6">
+    <div className="flex items-center bg-white/80 backdrop-blur-lg border border-gray-200/50 p-1 rounded-full shadow-sm w-full sm:w-max mb-6">
       {tabs.map(tab => (
         <button
           key={tab.key}
           onClick={() => onChange(tab.key)}
-          className={`relative flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 ${
+          className={`relative flex items-center justify-center gap-1.5 flex-1 sm:flex-none px-3 sm:px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 whitespace-nowrap ${
             active === tab.key
               ? "bg-slate-900 text-white shadow-sm"
               : "text-slate-500 hover:text-slate-800"
           }`}
         >
           {tab.icon}
-          {tab.label}
+          <span className="hidden sm:inline">{tab.label}</span>
+          <span className="sm:hidden">{tab.key === "app" ? "Insights" : "Google"}</span>
         </button>
       ))}
     </div>
@@ -529,10 +530,12 @@ export default function DashboardPage() {
                   )}
                 </div>
                 {trendPoints.length > 0 && (
-                  <div className="flex justify-between mt-1 px-2 text-[10px] font-mono text-slate-400">
-                    {trendPoints.map((p, i) => <span key={i}>{p.label}</span>)}
-                  </div>
-                )}
+          <div className="flex justify-between mt-1 px-2 text-[9px] sm:text-[10px] font-mono text-slate-400 overflow-hidden">
+            {trendPoints.map((p, i) => (
+              <span key={i} className={i === 0 || i === trendPoints.length - 1 || i === 3 ? "" : "hidden sm:inline"}>{p.label}</span>
+            ))}
+          </div>
+        )}
               </section>
 
               {/* Two Column Row */}
@@ -587,7 +590,7 @@ export default function DashboardPage() {
                 </div>
 
                 <Link href="/dashboard/qr-generator">
-                  <section className="bg-slate-900 text-white rounded-[24px] p-8 relative overflow-hidden shadow-[0px_15px_40px_rgba(0,0,0,0.15)] group cursor-pointer transition-all hover:scale-[1.01] h-full">
+                  <section className="bg-slate-900 text-white rounded-[24px] p-5 sm:p-8 relative overflow-hidden shadow-[0px_15px_40px_rgba(0,0,0,0.15)] group cursor-pointer transition-all hover:scale-[1.01] h-full">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16 blur-2xl" />
                     <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#4a47d2]/30 rounded-full -ml-24 -mb-24 blur-3xl" />
                     <div className="flex justify-between items-start relative z-10">
@@ -666,7 +669,7 @@ export default function DashboardPage() {
                           <span className="text-[10px] font-black mt-0.5">{review.rating}</span>
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between gap-2 mb-1">
+                          <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-0.5 mb-1">
                             <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold ${badge.color}`}>
                               {badge.icon}
                               {badge.label}
