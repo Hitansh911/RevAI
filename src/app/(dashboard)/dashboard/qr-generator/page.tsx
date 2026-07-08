@@ -176,4 +176,4 @@ export default function QRGenerator() {
       </div>
     </div>
   );
-
+}
