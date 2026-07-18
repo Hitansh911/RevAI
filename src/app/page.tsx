@@ -224,7 +224,7 @@ export default async function HomePage() {
               <span style={{ width: 8, height: 8, background: "#22c55e", borderRadius: "50%", display: "block" }} />
               <span style={{ position: "absolute", inset: -2, borderRadius: "50%", border: "1.5px solid #22c55e", animation: "pulseRing 1.5s ease-out infinite", display: "block" }} />
             </span>
-            <span style={{ fontSize: 12, fontWeight: 600, color: "#7c3aed" }}>500+ businesses active right now</span>
+            <span style={{ fontSize: 12, fontWeight: 600, color: "#7c3aed" }}>Trusted by local businesses</span>
           </div>
 
           <h1 className="r-h1 hero-h1" style={{ fontSize: "clamp(36px,6.5vw,72px)", fontWeight: 900, lineHeight: 1.06, marginBottom: 18, letterSpacing: "-2.5px" }}>
@@ -254,7 +254,7 @@ export default async function HomePage() {
 
           <div className="r-stats r-stats-row" style={{ display: "flex", gap: 48, justifyContent: "center", marginTop: 60, flexWrap: "wrap" }}>
             {[
-              { val: 500, suf: "+", label: "Businesses" },
+              { val: 10, suf: "x", label: "More Reviews" },
               { val: 12000, suf: "+", label: "Reviews generated" },
               { val: 30, suf: "s", label: "Avg. time to post" },
             ].map(s => (
