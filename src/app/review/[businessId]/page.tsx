@@ -159,6 +159,7 @@ export default function ReviewPage({
   const [emojiChoice, setEmojiChoice] = useState<EmojiChoice | null>(null);
   const [voiceTranscript, setVoiceTranscript] = useState("");
   const [overallRating, setOverallRating] = useState(5);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const [displayedOptions, setDisplayedOptions] = useState<string[]>([]);
   const hasTyped = useRef(false);
@@ -314,12 +315,16 @@ export default function ReviewPage({
   // ── Standard rating handler ─────────────────────────────────
   const handleRating = async (stars: number) => {
     setRating(stars);
+    setErrorMessage(null);
     setStep("generating");
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 25000);
     try {
       if (hasQuestions) {
         const res = await fetch("/api/generate-answers", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          signal: controller.signal,
           body: JSON.stringify({
             rating: stars,
             questions: business.questions,
@@ -328,12 +333,13 @@ export default function ReviewPage({
           }),
         });
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error);
+        if (!res.ok) throw new Error(data.error || "Failed to generate answers");
         setAnswers(data.answers || {});
       } else {
         const res = await fetch("/api/generate-review", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          signal: controller.signal,
           body: JSON.stringify({
             rating: stars,
             businessId: business.id,
@@ -342,7 +348,7 @@ export default function ReviewPage({
           }),
         });
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error);
+        if (!res.ok) throw new Error(data.error || "Failed to generate review");
         if (data.reviewOptions && data.reviewOptions.length > 0) {
           setReviewOptions(data.reviewOptions);
           setActiveOptionIndex(0);
@@ -354,7 +360,13 @@ export default function ReviewPage({
       setStep("review");
     } catch (e: any) {
       setStep("rating");
-      alert(e.message || "Something went wrong.");
+      const msg = e.name === "AbortError"
+        ? "Request timed out. Please check your connection and try again."
+        : (e.message || "Something went wrong. Please try again.");
+      setErrorMessage(msg);
+      showToast(msg);
+    } finally {
+      clearTimeout(timeout);
     }
   };
 
@@ -362,13 +374,17 @@ export default function ReviewPage({
   const handleEmojiSelect = async (choice: EmojiChoice, stars: number) => {
     setEmojiChoice(choice);
     setRating(stars);
+    setErrorMessage(null);
     setStep("generating");
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 25000);
 
     try {
       if (hasQuestions) {
         const res = await fetch("/api/generate-answers", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          signal: controller.signal,
           body: JSON.stringify({
             rating: stars,
             questions: business.questions,
@@ -377,12 +393,13 @@ export default function ReviewPage({
           }),
         });
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error);
+        if (!res.ok) throw new Error(data.error || "Failed to generate answers");
         setAnswers(data.answers || {});
       } else {
         const res = await fetch("/api/generate-review", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          signal: controller.signal,
           body: JSON.stringify({
             rating: stars,
             businessId: business.id,
@@ -391,7 +408,7 @@ export default function ReviewPage({
           }),
         });
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error);
+        if (!res.ok) throw new Error(data.error || "Failed to generate review");
         if (data.reviewOptions && data.reviewOptions.length > 0) {
           setReviewOptions(data.reviewOptions);
           setActiveOptionIndex(0);
@@ -403,7 +420,13 @@ export default function ReviewPage({
       setStep("express_edit");
     } catch (e: any) {
       setStep("express_pick");
-      alert(e.message || "Something went wrong.");
+      const msg = e.name === "AbortError"
+        ? "Request timed out. Please check your connection and try again."
+        : (e.message || "Something went wrong. Please try again.");
+      setErrorMessage(msg);
+      showToast(msg);
+    } finally {
+      clearTimeout(timeout);
     }
   };
 
@@ -535,7 +558,7 @@ export default function ReviewPage({
       setStep("success_modal");
     } catch {
       setStep("review");
-      alert("Failed to submit. Please try again.");
+      showToast("Failed to submit. Please try again.");
     }
   };
 
@@ -629,6 +652,36 @@ export default function ReviewPage({
               <div className="text-5xl mb-3">😕</div>
               <p className="font-bold text-red-500 text-lg mb-1.5">Business not found</p>
               <p className="text-gray-400 text-sm">This review link may be invalid.</p>
+            </div>
+          )}
+
+          {/* ── ERROR BANNER ── */}
+          {errorMessage && step === "rating" && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                gap: "0.65rem",
+                background: "linear-gradient(135deg, #fff1f2, #fef2f2)",
+                border: "1px solid #fecaca",
+                borderRadius: "1rem",
+                padding: "0.85rem 1rem",
+                marginBottom: "1rem",
+                animation: "fadeAndSlide 0.3s both",
+              }}
+            >
+              <span style={{ fontSize: "1.1rem", lineHeight: 1 }}>⚠️</span>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: "0.8rem", fontWeight: 700, color: "#b91c1c", margin: "0 0 0.2rem" }}>Generation failed</p>
+                <p style={{ fontSize: "0.75rem", color: "#dc2626", margin: 0, lineHeight: 1.5 }}>{errorMessage}</p>
+              </div>
+              <button
+                onClick={() => setErrorMessage(null)}
+                style={{ background: "none", border: "none", cursor: "pointer", color: "#f87171", padding: 0, lineHeight: 1 }}
+                aria-label="Dismiss error"
+              >
+                ✕
+              </button>
             </div>
           )}
 
