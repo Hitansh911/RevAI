@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
 
-// ── Category defaults ────────────────────────────────────────
+// â”€â”€ Category defaults â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const RESTAURANT_CATEGORIES = ["restaurant"];
 
 const DEFAULT_COUNTS: Record<string, number> = {
@@ -14,14 +14,14 @@ const CATEGORY_FOCUS: Record<string, string> = {
   restaurant: "upselling efficiency (drinks, desserts, appetizers), speed and table turnover satisfaction, hero dish identification, pricing perception vs. value, staff recommendation influence, and return visit intent",
 };
 
-// ── Fixed questions prepended to every restaurant/cafe survey ─
+// â”€â”€ Fixed questions prepended to every restaurant/cafe survey â”€
 const FIXED_RESTAURANT_QUESTIONS = [
   {
     id: "q1",
     text: "How would you rate the quality and taste of the food?",
     type: "rating",
     default_rating: 5,
-    auto_answer_rationale: "The food was delicious and well-presented — exactly what I was hoping for.",
+    auto_answer_rationale: "The food was delicious and well-presented â€” exactly what I was hoping for.",
   },
   {
     id: "q2",
@@ -39,14 +39,14 @@ const FIXED_RESTAURANT_QUESTIONS = [
   },
 ];
 
-// ── Prompt builders ──────────────────────────────────────────
+// â”€â”€ Prompt builders â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function buildRestaurantPrompt(topic: string, category: string, count: number): string {
   // The first 3 slots are always the fixed questions; the LLM generates the rest
   const dynamicCount = Math.max(0, count - FIXED_RESTAURANT_QUESTIONS.length);
 
   if (dynamicCount === 0) {
-    // Nothing dynamic needed — caller will use only the fixed questions
+    // Nothing dynamic needed â€” caller will use only the fixed questions
     return "";
   }
 
@@ -70,11 +70,11 @@ Generate exactly ${dynamicCount} additional customer feedback questions to follo
 ## Question Style Rules
 - Short and easy to understand (under 15 words)
 - Sound natural and customer-friendly
-- Answerable using a 1–5 star rating
+- Answerable using a 1â€“5 star rating
 - No technical language
 - Focus on measurable experiences
 - No duplicates or highly similar questions
-- Do NOT ask about food quality/taste, staff service, or ambience — those are already covered
+- Do NOT ask about food quality/taste, staff service, or ambience â€” those are already covered
 
 Good examples:
 - How satisfied were you with the speed of service?
@@ -116,8 +116,8 @@ CATEGORY: Teaching Session
 3. Questions should help the instructor improve delivery and identify what resonates with learners.
 
 ### QUESTION MIX:
-- ${ratingCount} rating questions (type: "rating") — answerable on a 1-5 star scale
-- ${textCount} open text questions (type: "text") — invite constructive feedback
+- ${ratingCount} rating questions (type: "rating") â€” answerable on a 1-5 star scale
+- ${textCount} open text questions (type: "text") â€” invite constructive feedback
 - Order: ALL rating questions FIRST, then text questions at the END
 - Keep each question concise and clear (under 15 words)
 
@@ -136,7 +136,7 @@ Return ONLY a valid JSON array. No markdown, no backticks, no explanation. Use t
 ]`;
 }
 
-// ── API handler ──────────────────────────────────────────────
+// â”€â”€ API handler â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function POST(req: NextRequest) {
   try {
@@ -146,11 +146,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Topic or category is required" }, { status: 400 });
     }
 
-    // Resolve count: user override → category default → 6
+    // Resolve count: user override â†’ category default â†’ 6
     const defaultCount = DEFAULT_COUNTS[category] || 6;
     const count = questionCount ? Math.max(2, Math.min(20, Number(questionCount))) : defaultCount;
 
-    // ── Teaching session: unchanged path ─────────────────────
+    // â”€â”€ Teaching session: unchanged path â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     if (category === "teaching_session") {
       const prompt = buildTeachingPrompt(topic || "a teaching session", count);
 
@@ -158,7 +158,7 @@ export async function POST(req: NextRequest) {
         apiKey: process.env.GROQ_API_KEY,
         baseURL: "https://api.groq.com/openai/v1",
       }).chat.completions.create({
-        model: "llama-3.3-70b-versatile",
+        model: "openai/gpt-oss-120b",
         messages: [
           { role: "system", content: "You are an expert business consultant and customer psychology architect. You always output valid JSON arrays with no markdown prose." },
           { role: "user", content: prompt }
@@ -200,7 +200,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ questions: validated });
     }
 
-    // ── Restaurant / all other categories: fixed-first path ──
+    // â”€â”€ Restaurant / all other categories: fixed-first path â”€â”€
     const prompt = buildRestaurantPrompt(topic || "", category || "restaurant", count);
     const dynamicCount = Math.max(0, count - FIXED_RESTAURANT_QUESTIONS.length);
 
@@ -211,7 +211,7 @@ export async function POST(req: NextRequest) {
         apiKey: process.env.GROQ_API_KEY,
         baseURL: "https://api.groq.com/openai/v1",
       }).chat.completions.create({
-        model: "llama-3.3-70b-versatile",
+        model: "openai/gpt-oss-120b",
         messages: [
           { role: "system", content: "You are an expert business consultant and customer psychology architect. You always output valid JSON arrays with no markdown prose." },
           { role: "user", content: prompt }

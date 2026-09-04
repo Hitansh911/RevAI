@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
 
-// ── Persona map based on category ────────────────────────────
+// â”€â”€ Persona map based on category â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const PERSONA: Record<string, string> = {
   restaurant: "a customer who just dined at a restaurant",
   salon: "a customer who just visited a salon",
@@ -56,7 +56,7 @@ Format example:
       apiKey: process.env.GROQ_API_KEY,
       baseURL: "https://api.groq.com/openai/v1",
     }).chat.completions.create({
-      model: "llama-3.3-70b-versatile",
+      model: "openai/gpt-oss-120b",
       messages: [
         { role: "system", content: "You are a helpful assistant that always outputs valid JSON." },
         { role: "user", content: prompt }

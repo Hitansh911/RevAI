@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
 const HF_SENTIMENT_MODEL =
   "cardiffnlp/twitter-roberta-base-sentiment-latest";
 
 
-// ── Hugging Face sentiment helper ─────────────────────────────
+// â”€â”€ Hugging Face sentiment helper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 async function getSentimentFromHF(
   text: string
 ): Promise<"positive" | "neutral" | "negative"> {
@@ -30,7 +30,7 @@ async function getSentimentFromHF(
     }
 
     const data = await res.json();
-    // HF returns [[{label, score}, ...]] — pick highest score
+    // HF returns [[{label, score}, ...]] â€” pick highest score
     const scores: { label: string; score: number }[] =
       Array.isArray(data[0]) ? data[0] : data;
 
@@ -46,7 +46,7 @@ async function getSentimentFromHF(
   }
 }
 
-// Simple local fallback — no external call needed
+// Simple local fallback â€” no external call needed
 function inferSentimentLocally(
   text: string
 ): "positive" | "neutral" | "negative" {
@@ -69,14 +69,14 @@ function inferSentimentLocally(
   return "neutral";
 }
 
-// Map sentiment → star rating
+// Map sentiment â†’ star rating
 function sentimentToRating(
   sentiment: "positive" | "neutral" | "negative"
 ): number {
   return sentiment === "positive" ? 5 : sentiment === "neutral" ? 3 : 2;
 }
 
-// ── API handler ───────────────────────────────────────────────
+// â”€â”€ API handler â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export async function POST(req: NextRequest) {
   try {
     const { transcript, category = "restaurant", questions } = await req.json();
@@ -127,7 +127,7 @@ If no questions were provided, return an empty object for answers.`;
       apiKey: process.env.GROQ_API_KEY,
       baseURL: "https://api.groq.com/openai/v1",
     }).chat.completions.create({
-      model: "llama-3.3-70b-versatile",
+      model: "openai/gpt-oss-120b",
       messages: [
         {
           role: "system",

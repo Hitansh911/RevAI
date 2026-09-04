@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
 
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
       .slice(0, 60)
       .map(
         (r: any, i: number) =>
-          `[Review ${i + 1} · ${r.rating ?? "?"}★]: ${(
+          `[Review ${i + 1} Â· ${r.rating ?? "?"}â˜…]: ${(
             r.text || r.generatedText || ""
           )
             .slice(0, 500)
@@ -39,7 +39,7 @@ Analyze the following ${reviews.length} customer feedback entries and extract co
 ${trimmed}
 --- END LOG ---
 
-Return a clean, parseable JSON object matching this EXACT structure (no markdown, no explanation — only JSON):
+Return a clean, parseable JSON object matching this EXACT structure (no markdown, no explanation â€” only JSON):
 {
   "executive_summary": "A concise, professional 2-3 sentence overview highlighting current guest sentiment and overall operational velocity.",
   "things_to_improve": [
@@ -63,7 +63,7 @@ Rules:
       apiKey: process.env.GROQ_API_KEY,
       baseURL: "https://api.groq.com/openai/v1",
     }).chat.completions.create({
-      model: "llama-3.3-70b-versatile",
+      model: "openai/gpt-oss-120b",
       messages: [
         {
           role: "system",
